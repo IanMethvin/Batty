@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Library stylesheets -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.min.css">
+
+        <!-- Application Stylesheets -->
+        <link rel="stylesheet" type="text/css" href="css/Batty.css">
+
+        <!-- Library scripts -->
+        <script type="text/javascript" src="libraries/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="libraries/underscore-min.js"></script>
+
+        <!-- Application scripts -->
+        <script type="text/javascript" src="js/Bats.js"></script>
+        <script type="text/javascript" src="js/CanvasState.js"></script>
+        <script type="text/javascript" src="js/Batty.js"></script>
+    </head>
+    <body onload="initializeCave()">
+        <section class="section is-small">
+            <!-- Container for game canvas  -->
+            <div id="gameContainer" class="container" unselectable="on">
+                <div class="columns is-vcentered">
+                    <div class="column">
+                        <h1 class="title is-1">Batty</h1>
+                        <canvas id="battyCanvas" height="600" width="600"></canvas> 
+                    </div>
+                </div>
+            </div>
+            <div >
+                    <!-- style="display:none" -->
+                <img id="battyUp" src="img/img_trans.png" height="27" width="54">
+                <img id="battyDown" src="img/img_trans.png" height="27" width="54">
+            </div>
+        </section>
+    </body>
+</html>

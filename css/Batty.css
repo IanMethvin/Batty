@@ -1,0 +1,15 @@
+#gameContainer {
+    text-align: center;
+}
+
+#battyUp {
+    height: 9px;
+    width: 18px;
+    background: url('../img/Batty.png') 0 0;
+}
+
+#battyDown {
+    height: 9px;
+    width: 18px;
+    background: url('../img/Batty.png') 0 0;
+}
