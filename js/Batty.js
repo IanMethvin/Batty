@@ -14,3 +14,14 @@ function initGame() {
     cState.clear();
     cState.draw();
 }
+
+// Generate a random move within the canvas board.
+function getRandomY() {   
+    return randomIntFromInterval(0, cState.height);
+}
+
+// Generate a random number between the min and max.
+function randomIntFromInterval(min,max)
+{
+    return Math.floor(Math.random()*(max-min+1)+min);
+}

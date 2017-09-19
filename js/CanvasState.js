@@ -16,6 +16,8 @@ function CanvasState(canvas) {
     this.gameOver = false;
     this.drawInterval = 5;
     this.scoreInterval = 100;
+    this.obstacleInterval = 500;
+    this.obstacles = [];
 
     var cState = this;
 
@@ -48,6 +50,7 @@ CanvasState.prototype.startGame = function() {
     cState.gameRunning = true;
     cState.cInterval = setInterval( function() { cState.draw(); }, cState.drawInterval );
     cState.sInterval = setInterval( function() { cState.incrementScore(); }, cState.scoreInterval )
+    cState.oInterval = setInterval( function() { cState.addObstacle(); }, cState.obstacleInterval )
 }
 
 // Reset game state and redraw inital image.
@@ -55,6 +58,7 @@ CanvasState.prototype.restartGame = function() {
     this.gameScore = 0;
     this.gameRunning = false;
     this.gameOver = false;
+    this.obstacles = [];
 
     var batty = this.batty;
     this.batty.x = batty.startingX;
@@ -84,8 +88,23 @@ CanvasState.prototype.draw = function () {
     batty.fly();
     ctx.drawImage(batty.img, batty.x, batty.y, batty.width, batty.height);
 
+    // Draw Obstacles
+    var os = this.obstacles
+    for (i = 0; i < os.length; i++) {
+        var o = os[i];
+        o.move();
+
+        ctx.beginPath();
+        ctx.arc(o.x, o.y, o.radius, 0, 2 * Math.PI, false);
+        ctx.fillStyle = 'green';
+        ctx.fill();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = '#003300';
+        ctx.stroke();
+    }
+
     // If Batty is off the screen, game over
-    if (batty.y > h - (batty.height / 2) || batty.y < 0) {
+    if (this.isGameOver()) {
         cState.endGame();
     }
     else {
@@ -96,12 +115,45 @@ CanvasState.prototype.draw = function () {
     }
 }
 
+// 70% chance to add an obstacle to be drawn .
+CanvasState.prototype.addObstacle = function() {
+    var chance = randomIntFromInterval(0,10);
+    if (chance > 7)
+        cState.obstacles.push(new Obstacle(cState.width + 30, getRandomY()));
+}
+
+// Check game state to see if game should be over.
+CanvasState.prototype.isGameOver = function() {
+    var b = this.batty;
+    if (b.y > this.height - (b.height / 2) || b.y < 0) {
+        return true;
+    }
+
+    var os = this.obstacles;
+    for (i = 0; i < os.length; i++) {
+        var o = os[i];
+        // If obstacle is offscreen, remove it
+        if (o.x < 0) {
+            this.obstacles.splice(i, 1);
+            i--;
+        }
+        // Check it Batty has overlap with the object
+        //this check isnt working
+        if (b.x > o.x + o.radius && b.y > o.y + o.radius && b.y < o.y - o.radius) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 // Display game over message and offer restart.
 CanvasState.prototype.endGame = function() {
     cState.gameRunning = false;
     cState.gameOver = true;
     clearInterval(cState.cInterval);
     clearInterval(cState.sInterval);
+    clearInterval(cState.oInterval);
 
     // Draw game over
     var ctx = cState.ctx;
