@@ -6,11 +6,11 @@ function initializeCave () {
     canvasObj = $('#battyCanvas');
     cState = new CanvasState(canvasObj[0]);
 
-    restartGame();
+    initGame();
 }
 
-// Clears the game and reset the game state.
-function restartGame() {
-    cState.ctx.clearRect(0, 0, cState.width, cState.height);
+// Draw inital game image.
+function initGame() {
+    cState.clear();
     cState.draw();
 }

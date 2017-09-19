@@ -17,13 +17,13 @@
         <script type="text/javascript" src="js/CanvasState.js"></script>
         <script type="text/javascript" src="js/Batty.js"></script>
     </head>
-    <body onload="initializeCave()">
+    <body onload="initializeCave()" unselectable="on">
         <section class="section is-small">
             <!-- Container for game canvas  -->
             <div id="gameContainer" class="container" unselectable="on">
-                <div class="columns is-vcentered">
-                    <div class="column">
-                        <h1 class="title is-1">Batty</h1>
+                <div class="columns is-vcentered" unselectable="on">
+                    <div class="column" unselectable="on">
+                        <h1 class="title is-1" unselectable="on">Batty</h1>
                         <canvas id="battyCanvas" height="700" width="1400"></canvas> 
                     </div>
                 </div>
