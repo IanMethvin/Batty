@@ -18,13 +18,14 @@
         <script type="text/javascript" src="js/Obstacle.js"></script>
         <script type="text/javascript" src="js/CanvasState.js"></script>
     </head>
-    <body onload="initializeCave()" unselectable="on">
+    <body onload="initializeGameState()" unselectable="on">
         <section class="section is-small">
             <!-- Container for game canvas  -->
             <div id="gameContainer" class="container" unselectable="on">
                 <div class="columns is-vcentered" unselectable="on">
                     <div class="column" unselectable="on">
                         <h1 class="title is-1" unselectable="on">Batty</h1>
+                        <button id="muteBGM">Press ESC or Click Here to Toggle Background Music</button>
                         <canvas id="battyCanvas" height="700" width="1400"></canvas> 
                     </div>
                 </div>
@@ -34,6 +35,10 @@
                 <img id="battyUp" src="img/GlitterBat.png" height="67" width="150">
                 <img id="battyDown" src="img/img_trans.png" height="54" width="108">
             </div>
+            <!-- Audio element to provide background music -->
+            <audio id="background-music">
+                Your browser does not support the <code>audio</code> element.
+            </audio>
         </section>
     </body>
 </html>

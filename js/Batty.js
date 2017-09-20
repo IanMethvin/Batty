@@ -1,18 +1,55 @@
 var canvasObj = {};
 var cState = {};
 
+var backgroundMusic = {};
+var audioMuted = false;
+
 // Initialize the game board on page load.
 function initializeCave () {
     canvasObj = $('#battyCanvas');
     cState = new CanvasState(canvasObj[0]);
-
-    initGame();
 }
 
-// Draw inital game image.
-function initGame() {
-    cState.clear();
-    cState.draw();
+function initializeBackgroundMusic () {
+    // Initialize background music 
+    backgroundMusic = $('#background-music')[0];
+    backgroundMusic.src = 'sounds/bgm.mp3';
+    backgroundMusic.loop = true;
+    backgroundMusic.autoplay = false;
+
+    $('#muteBGM').on('click', function () {
+        toggleBackgroundMusic();
+    });
+}
+
+// Initialize cave, background music, and key press listeners
+function initializeGameState () {
+    initializeCave();
+    initializeBackgroundMusic();
+
+    $(document).keyup(function(e) {
+        // Toggle background music on esc key press
+        if (e.keyCode == 27) { 
+           toggleBackgroundMusic();
+       }
+
+       // If game is over, check for restart space bar press
+        else if (e.keyCode == 32 && !cState.gameRunning && cState.gameOver) {
+            cState.restartGame();
+        }
+   });
+}
+
+// Toggle the mute state of the audio for the background music
+function toggleBackgroundMusic () {
+    audioMuted = !audioMuted;
+    
+    if (audioMuted) {
+        backgroundMusic.pause();
+    }
+    else {
+        backgroundMusic.play();
+    }
 }
 
 // Generate a random move within the canvas board.

@@ -1,14 +1,12 @@
 // Constructor for the current state of the canvas
 function CanvasState(canvas) {
+    var cState = this;
     
     // Initialize canvas properties
     this.canvas = canvas;
     this.width = canvas.width;
     this.height = canvas.height;
     this.ctx = canvas.getContext('2d');
-
-    // Initialize Batty 
-    this.batty = new Batty(this.width * .20, this.height * .25);
 
     // Initialize game properties
     this.gameScore = 0;
@@ -19,7 +17,25 @@ function CanvasState(canvas) {
     this.obstacleInterval = 500;
     this.obstacles = [];
 
-    var cState = this;
+    // Tracks the horizontal offset of the background image
+    this.vx = -2;
+
+    // Establish background image src and defines actions on image laod
+    this.backgroundImage = new Image(5042, 657);
+
+    // Load event needed to specify exactly when to draw the background and other game related features
+    this.backgroundImage.addEventListener('load', function() {
+        cState.drawBackground();
+        
+        // Initialize Batty after background loads
+        cState.batty = new Batty(cState.width * .20, cState.height * .25);
+
+        // Initialize game drawing only after background and batty images are loaded
+        cState.clear();
+        cState.draw();
+      }, false);
+      
+    this.backgroundImage.src = 'img/background.png';
 
     // Listener to track mouse click events
     canvas.addEventListener('mousedown', function(e) {
@@ -34,14 +50,12 @@ function CanvasState(canvas) {
         if (cState.gameRunning) {
             cState.batty.flap();
         }
-        // If game is over, check for restart click
-        else {
-            var mouse = cState.getMousePosition(e);
-            if (cState.isRestartClick(mouse)) {
-                cState.restartGame();
-            }
-        }
     }, true);
+
+    // Listener to prevent surrounding text from being selected on double click.
+    canvas.onselectstart = function () { 
+        return false; 
+    }    
 }
 
 // Start drawing and scoring intervals.
@@ -51,6 +65,11 @@ CanvasState.prototype.startGame = function() {
     cState.cInterval = setInterval( function() { cState.draw(); }, cState.drawInterval );
     cState.sInterval = setInterval( function() { cState.incrementScore(); }, cState.scoreInterval )
     cState.oInterval = setInterval( function() { cState.addObstacle(); }, cState.obstacleInterval )
+
+    // Play the background music if audio isn't muted
+    if (!audioMuted) {
+        backgroundMusic.play();
+    }
 }
 
 // Reset game state and redraw inital image.
@@ -63,14 +82,39 @@ CanvasState.prototype.restartGame = function() {
     var batty = this.batty;
     this.batty.x = batty.startingX;
     this.batty.y = batty.startingy;
+
     this.clear();
     this.draw();
+
+    cState.startGame();
 }
 
 // Increase game score
 CanvasState.prototype.incrementScore = function() {
     this.gameScore++;
 }
+
+CanvasState.prototype.drawBackground = function () {
+    var ctx = this.ctx;
+    
+    // Lower global alpha to reduce opacity when drawing the background image
+    ctx.globalAlpha = 0.6;
+
+    // Two draw instances needed for continuous scrolling
+	ctx.drawImage(this.backgroundImage, this.vx, 50);
+	ctx.drawImage(this.backgroundImage, this.backgroundImage.width - Math.abs(this.vx), 50);
+    
+    // Reset offset if it is past the width of the background image
+	if (Math.abs(this.vx) > this.backgroundImage.width) {
+		this.vx = 0;
+	}
+    
+    // Adjust horizontal offset
+    this.vx -= 2;
+
+    // Restore global alpha
+    ctx.globalAlpha = 1;
+};
 
 // Draw game and check for end game state.
 CanvasState.prototype.draw = function () {
@@ -82,6 +126,9 @@ CanvasState.prototype.draw = function () {
     // Fill in cave dark grey
     ctx.fillStyle = "#101010";
     ctx.fillRect(0, 0, w, h);
+
+    // Draw background before batty to ensure background loads underneath
+    cState.drawBackground();
 
     // Draw Batty
     var batty = this.batty;
@@ -155,10 +202,14 @@ CanvasState.prototype.endGame = function() {
     clearInterval(cState.sInterval);
     clearInterval(cState.oInterval);
 
+    // Reset background music when game ends
+    backgroundMusic.pause();
+    backgroundMusic.load();
+
     // Draw game over
     var ctx = cState.ctx;
     ctx.font = "50px Impact MS";
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "#fff";
     ctx.textAlign = "center";
     ctx.fillText("GAME OVER", cState.width/2, cState.height/2 - 25); 
 
@@ -168,7 +219,7 @@ CanvasState.prototype.endGame = function() {
 
     // Draw restart
     ctx.font = "35px Impact MS";
-    ctx.fillText("Restart?", cState.width/2, cState.height - 50); 
+    ctx.fillText("Press Space Bar To Restart The Game", cState.width/2, cState.height - 50); 
 }
 
 // Clear the canvas
