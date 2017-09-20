@@ -98,7 +98,7 @@ CanvasState.prototype.drawBackground = function () {
     var ctx = this.ctx;
     
     // Lower global alpha to reduce opacity when drawing the background image
-    ctx.globalAlpha = 0.6;
+    ctx.globalAlpha = 0.5;
 
     // Two draw instances needed for continuous scrolling
 	ctx.drawImage(this.backgroundImage, this.vx, 50);
@@ -124,7 +124,7 @@ CanvasState.prototype.draw = function () {
     this.clear();
 
     // Fill in cave dark grey
-    ctx.fillStyle = "#101010";
+    ctx.fillStyle = "#1c1c1c";
     ctx.fillRect(0, 0, w, h);
 
     // Draw background before batty to ensure background loads underneath
@@ -157,7 +157,7 @@ CanvasState.prototype.draw = function () {
     else {
         // Draw score
         ctx.font = "25px Impact MS";
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "#fff";
         ctx.fillText("Score: " + cState.gameScore, cState.width - 130, 30); 
     }
 }

@@ -3,8 +3,8 @@ function Batty(x, y) {
     //Drawing properties
     this.x = x;
     this.y = y;
-    this.width = 150;
-    this.height = 67;
+    this.width = 100;
+    this.height = 100;
     this.img = $("#battyUp")[0];
     this.startingX = x;
     this.startingy = y;
