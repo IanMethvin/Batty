@@ -54,7 +54,7 @@ function toggleBackgroundMusic () {
 
 // Generate a random move within the canvas board.
 function getRandomY() {   
-    return randomIntFromInterval(0, cState.height);
+    return randomIntFromInterval(0, cState.height - 50);
 }
 
 // Generate a random number between the min and max.

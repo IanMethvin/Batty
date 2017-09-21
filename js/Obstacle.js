@@ -1,7 +1,9 @@
 function Obstacle(x, y) {
     this.x = x;
     this.y = y;
-    this.radius = 30;
+    this.height = 100;
+    this.width = 100;
+    this.img = $("#garlick")[0];
 }
 
 Obstacle.prototype.move = function() {

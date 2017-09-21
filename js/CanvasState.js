@@ -140,14 +140,7 @@ CanvasState.prototype.draw = function () {
     for (i = 0; i < os.length; i++) {
         var o = os[i];
         o.move();
-
-        ctx.beginPath();
-        ctx.arc(o.x, o.y, o.radius, 0, 2 * Math.PI, false);
-        ctx.fillStyle = 'green';
-        ctx.fill();
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = '#003300';
-        ctx.stroke();
+        ctx.drawImage(o.img, o.x, o.y, o.width, o.height);
     }
 
     // If Batty is off the screen, game over
@@ -180,7 +173,7 @@ CanvasState.prototype.isGameOver = function() {
     for (i = 0; i < os.length; i++) {
         var o = os[i];
         // If obstacle is offscreen, remove it
-        if (o.x < 0) {
+        if (o.x < -(o.width / 2)) {
             this.obstacles.splice(i, 1);
             i--;
         }
