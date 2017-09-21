@@ -58,7 +58,7 @@ function CanvasState(canvas) {
     }    
 }
 
-// Start drawing and scoring intervals.
+// Start intervals and set state.
 CanvasState.prototype.startGame = function() {
     var cState = this;
     cState.gameRunning = true;
@@ -177,9 +177,10 @@ CanvasState.prototype.isGameOver = function() {
             this.obstacles.splice(i, 1);
             i--;
         }
+
         // Check it Batty has overlap with the object
-        //this check isnt working
-        if (b.x > o.x + o.radius && b.y > o.y + o.radius && b.y < o.y - o.radius) {
+        if ((b.x < o.x + o.width/2 && b.x  > o.x - o.width/2 ) 
+            && (b.y < o.y + o.height/2 && b.y > o.y - o.height/2)) {
             return true;
         }
     }
