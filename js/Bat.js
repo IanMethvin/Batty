@@ -5,13 +5,16 @@ function Batty(x, y) {
     this.y = y;
     this.width = 100;
     this.height = 100;
-    this.img = $("#battyUp")[0];
+    this.imgUp = $("#battyUp")[0];
+    this.imgDown = $("#battyDown")[0];
+    this.imgNeutral = $("#battyNeutral")[0];
+    this.img = this.imgNeutral;
     this.startingX = x;
     this.startingy = y;
 
     //Flying properties
     this.flapping = false;
-    this.flapInterval = 50; 
+    this.flapInterval = 60; 
     this.flapTimmer = this.flapInterval; 
 }
 
@@ -24,10 +27,14 @@ Batty.prototype.fly = function() {
         if (this.flapTimmer <= 0) {
             this.flapping = false;
         }
+        else if (this.flapTimmer > 30) {
+            this.img = this.imgUp;
+        }
     }
     // Batty will fall by default
     else {
         this.y = this.y + 2;
+        this.img = this.imgNeutral;
     }
 }
 
@@ -35,4 +42,5 @@ Batty.prototype.fly = function() {
 Batty.prototype.flap = function() {
     this.flapping = true;
     this.flapTimmer = this.flapInterval;
+    this.img = this.imgDown;
 }
