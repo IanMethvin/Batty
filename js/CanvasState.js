@@ -178,7 +178,9 @@ CanvasState.prototype.isGameOver = function() {
             i--;
         }
 
-        if (this.detectCollision(o)) {
+        // Check it Batty has overlap with the object
+        if ((b.x < o.x + o.width/2 && b.x  > o.x - o.width/2 ) 
+            && (b.y < o.y + o.height/2 && b.y > o.y - o.height/2)) {
             return true;
         }
     }
