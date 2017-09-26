@@ -178,14 +178,43 @@ CanvasState.prototype.isGameOver = function() {
             i--;
         }
 
-        // Check it Batty has overlap with the object
-        if ((b.x < o.x + o.width/2 && b.x  > o.x - o.width/2 ) 
-            && (b.y < o.y + o.height/2 && b.y > o.y - o.height/2)) {
+        if (this.detectCollision(o)) {
             return true;
         }
     }
 
     return false;
+}
+
+// Detect if Batty is touching any obsticles 
+CanvasState.prototype.detectCollision = function(o) {
+    var b = this.batty;
+
+    // Remove some pixels to adjust for the image width
+    var oW = o.width;// - 5;
+    var oH = o.hieght;// - 5;
+
+    var distX = Math.abs(b.x - o.x - oW / 2);
+    var distY = Math.abs(b.y - o.y - oH / 2);
+
+    if (distX > (oW / 2 + b.width)) {
+        return false;
+    }
+    if (distY > (oH / 2 + b.width)) {
+        return false;
+    }
+
+    if (distX <= (oW/ 2)) {
+        return true;
+    }
+    if (distY <= (oH / 2)) {
+        return true;
+    }
+
+    var dx = distX - oW / 2;
+    var dy = distY - oH / 2;
+    return (dx * dx + dy * dy <= (b.width * b.width));
+
 }
 
 // Display game over message and offer restart.

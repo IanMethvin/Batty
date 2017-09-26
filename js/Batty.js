@@ -58,7 +58,15 @@ function getRandomY() {
 }
 
 // Generate a random number between the min and max.
-function randomIntFromInterval(min,max)
-{
+function randomIntFromInterval(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+// Return true if point in between two numbers
+function isBetween(point, min, max) {
+    if (min <= point && point <= max) {
+        return true;
+    }
+
+    return false;
 }
